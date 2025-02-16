@@ -1,0 +1,24 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.mainFxmlClass {
+    -fx-background-color:  #1FCE7D;
+}
+
+.button{
+    -fx-background-color: #1FCE7D;
+    -fx-background-fill: #1FCE7D;
+    -fx-cursor: hand;
+}
+
+#caja{
+    -fx-background-color: #1FCE7D;
+    -fx-background-fill: #1FCE7D;
+    -fx-alignment: center;
+}
+
+#lblTitulo{
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+}

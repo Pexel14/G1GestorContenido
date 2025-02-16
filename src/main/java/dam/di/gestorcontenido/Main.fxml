@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900.0" styleClass="mainFxmlClass" stylesheets="@main.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.di.gestorcontenido.MainController">
+   <children>
+      <AnchorPane fx:id="contenido" layoutX="147.0" layoutY="84.0" prefHeight="516.0" prefWidth="754.0" />
+      <VBox id="caja" layoutX="14.0" layoutY="110.0" prefHeight="380.0" prefWidth="131.0" stylesheets="@main.css">
+         <children>
+            <Button fx:id="btnAniadir" mnemonicParsing="false" onAction="#handleAniadirAction">
+               <graphic>
+                  <ImageView fitHeight="85.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../DesarrolloInterfaces/workspaceT1/Ejercicio6Examen/src/ejercicio6examen/img/iconoPer.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="btnModificar" mnemonicParsing="false" onAction="#handleModificarButton">
+               <graphic>
+                  <ImageView fitHeight="85.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../DesarrolloInterfaces/workspaceT1/Ejercicio6Examen/src/ejercicio6examen/img/icnTask.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#handleEliminarButton">
+               <graphic>
+                  <ImageView fitHeight="85.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../DesarrolloInterfaces/workspaceT1/Ejercicio6Examen/src/ejercicio6examen/img/icnCarp.jpeg" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="btnSalir" mnemonicParsing="false" onAction="#handleSalirButton">
+               <graphic>
+                  <ImageView fitHeight="85.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../DesarrolloInterfaces/workspaceT1/Ejercicio6Examen/src/ejercicio6examen/img/icnExt.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </VBox>
+      <Label fx:id="lblTitulo" layoutX="449.0" layoutY="24.0" prefWidth="2.0" />
+   </children>
+</AnchorPane>
