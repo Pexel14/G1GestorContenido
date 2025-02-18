@@ -5,18 +5,23 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900.0" styleClass="mainFxmlClass" stylesheets="@main.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.di.gestorcontenido.MainController">
    <children>
-      <AnchorPane fx:id="contenido" layoutX="147.0" layoutY="84.0" prefHeight="516.0" prefWidth="754.0" />
+      <Pane layoutY="-0.6000000000000227" prefHeight="600.0" prefWidth="188.0" style="-fx-background-color: #1FCE7D;" AnchorPane.bottomAnchor="1.0">
+         <children>
+            <Pane layoutX="187.0" prefHeight="94.0" prefWidth="715.0" style="-fx-background-color: #1FCE7D;" stylesheets="@main.css" />
+         </children>
+      </Pane>
       <VBox id="caja" layoutX="14.0" layoutY="110.0" prefHeight="380.0" prefWidth="131.0" stylesheets="@main.css">
          <children>
             <Button fx:id="btnAniadir" mnemonicParsing="false" onAction="#handleAniadirAction">
                <graphic>
                   <ImageView fitHeight="85.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../DesarrolloInterfaces/workspaceT1/Ejercicio6Examen/src/ejercicio6examen/img/iconoPer.png" />
+                        <Image url="@img/login.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -25,7 +30,7 @@
                <graphic>
                   <ImageView fitHeight="85.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../DesarrolloInterfaces/workspaceT1/Ejercicio6Examen/src/ejercicio6examen/img/icnTask.png" />
+                        <Image url="@img/iconoPer.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -34,7 +39,7 @@
                <graphic>
                   <ImageView fitHeight="85.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../DesarrolloInterfaces/workspaceT1/Ejercicio6Examen/src/ejercicio6examen/img/icnCarp.jpeg" />
+                        <Image url="@img/icnCarp.jpeg" />
                      </image>
                   </ImageView>
                </graphic>
@@ -43,13 +48,15 @@
                <graphic>
                   <ImageView fitHeight="85.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../DesarrolloInterfaces/workspaceT1/Ejercicio6Examen/src/ejercicio6examen/img/icnExt.png" />
+                        <Image url="@img/icnExt.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
          </children>
       </VBox>
-      <Label fx:id="lblTitulo" layoutX="449.0" layoutY="24.0" prefWidth="2.0" />
+      <Label fx:id="lblTituloMain" alignment="CENTER" layoutX="263.0" layoutY="30.0" prefHeight="46.0" prefWidth="638.0" text="Añadir Desafíos" textAlignment="CENTER" />
+      <Button layoutX="809.0" layoutY="34.0" mnemonicParsing="false" text="AYUDA" />
+      <AnchorPane fx:id="contenido" layoutX="186.0" layoutY="94.0" prefHeight="506.0" prefWidth="715.0" />
    </children>
 </AnchorPane>

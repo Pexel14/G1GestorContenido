@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "204498784227",
+    "firebase_url": "https://pipas-pruebas-default-rtdb.firebaseio.com",
+    "project_id": "pipas-pruebas",
+    "storage_bucket": "pipas-pruebas.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:204498784227:android:1734e37dfb6e6a1aeb5ad6",
+        "android_client_info": {
+          "package_name": "dam.di.gestorcontenido"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvk9XCraZI5kAdtqTSIdCR1vnFRVY81Yg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:204498784227:android:6c7ca698cc72c23aeb5ad6",
+        "android_client_info": {
+          "package_name": "dam.pmdm.a101pipas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvk9XCraZI5kAdtqTSIdCR1vnFRVY81Yg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

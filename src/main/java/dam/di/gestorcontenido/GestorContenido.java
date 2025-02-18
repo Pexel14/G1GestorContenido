@@ -4,6 +4,7 @@
  */
 package dam.di.gestorcontenido;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,9 +22,9 @@ public class GestorContenido extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
         try {
-            Parent loader = FXMLLoader.load(getClass().getResource("Main.fxml"));
+            File archivo = new File("src/main/java/dam/di/gestorcontenido/Main.fxml");
+            Parent loader = FXMLLoader.load(archivo.toURI().toURL());
 
             Scene scene = new Scene(loader);
             primaryStage.setScene(scene);

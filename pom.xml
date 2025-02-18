@@ -13,12 +13,12 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>13</version>
+            <version>17</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>13</version>
+            <version>17</version>
         </dependency>
         
         <dependency>
@@ -31,7 +31,6 @@
             <artifactId>google-auth-library-oauth2-http</artifactId>
             <version>1.13.0</version>
         </dependency>
-        
     </dependencies>
     <build>
         <plugins>
@@ -49,6 +48,8 @@
                 <version>0.0.4</version>
                 <configuration>
                     <mainClass>dam.di.gestorcontenido1.App</mainClass>
+                        <module>javafx.controls</module>
+                        <module>javafx.fxml</module>
                 </configuration>
                 <executions>
                     <execution>

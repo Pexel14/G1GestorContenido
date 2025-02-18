@@ -4,21 +4,49 @@
  */
 package dam.di.gestorcontenido;
 
+import com.google.api.core.ApiFuture;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Bucket;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.cloud.StorageClient;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 
 /**
- * FXML Controller class
+ * Clase controladora para la vista Aniadir.fxml
  *
- * @author ignac
+ * @author Axel
  */
 public class ModificarAniadirController implements Initializable {
 
@@ -56,29 +84,355 @@ public class ModificarAniadirController implements Initializable {
     private Button btnCrearDes;
     @FXML
     private Button btnImagen;
+    @FXML
+    private Label lblTitulo;
+    @FXML
+    private Label lblTituloExp;
+    @FXML
+    private Label lblDescripcion;
+    @FXML
+    private Label lblDireccion;
+    @FXML
+    private Label lblCoordenadas;
+    
+    private FirebaseDatabase db;
+    private DatabaseReference refDef;
+    private DatabaseReference refExp;
+    private Desafio desafio;
+    private ArrayList<Experiencia> listaExp;
+    private String nombreImagen;
+    private Image imagenDefault;
+    private Bucket bucket;
 
     /**
-     * Initializes the controller class.
+     * Inicializa el punto de entrada de las dependencias de Firebase.
+     * También inicializa las referencias de 'desafios' y 'experiencias' de la base de datos junto al Bucket para subir imágenes.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        
+        try {
+            if(FirebaseApp.getApps().isEmpty()){
+                FileInputStream credenciales = new FileInputStream("credenciales.json");
+                //Construir las opciones de Firebase
+                FirebaseOptions options = new FirebaseOptions.Builder()
+                        .setCredentials(GoogleCredentials.fromStream(credenciales))
+                        .setDatabaseUrl("https://pipas-pruebas-default-rtdb.firebaseio.com/")
+                        .setStorageBucket("pipas-pruebas.firebasestorage.app")
+                    .build();
 
-    @FXML
-    private void handleBtnAniadirExpAction(ActionEvent event) {
+                FirebaseApp.initializeApp(options);
+            }
+            
+            db = FirebaseDatabase.getInstance();
+
+            refDef = db.getReference("desafios");
+            refExp = db.getReference("experiencias");
+            
+            bucket = StorageClient.getInstance().bucket("pipas-pruebas.firebasestorage.app");
+            
+            listaExp = new ArrayList<>();
+            imagenDefault = ivExperiencia.getImage();
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
-
-    @FXML
-    private void handleBtnAniadirDesafioAction(ActionEvent event) {
-    }
-
+    
+    /**
+     * Método para crear un desafío
+     * @param event 
+     */
     @FXML
     private void handleBtnCrearDesafioAction(ActionEvent event) {
+        String titulo = tfTituloDes.getText().trim();
+        if (!titulo.isEmpty()) {
+            System.out.println("PASA POR AQUI 1");
+            refDef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot ds) {
+            System.out.println("PASA POR AQUI 2");
+                    String tituloDes = null;
+                    boolean encontrado = false;
+                    
+                    for (DataSnapshot snapshot : ds.getChildren()) {
+                        tituloDes = snapshot.child("titulo").getValue(String.class);
+                        if (tituloDes.equals(titulo)) {
+                            encontrado = true;
+                        }
+                    }
+
+                    if (!encontrado) {
+                                    System.out.println("PASA POR AQUI 3");
+                        String descripcion = taDescripcionDes.getText().trim();
+
+                        if (!descripcion.isEmpty()) {
+                            String ciudad = tfCiudad.getText().trim();
+
+                            if (!ciudad.isEmpty()) {
+                                            System.out.println("PASA POR AQUI 3.5");
+                                ArrayList<String> listaEtiquetas = new ArrayList<>();
+
+                                if (chkArte.isSelected()) {
+                                    listaEtiquetas.add(chkArte.getText());
+                                }
+
+                                if (chkCultura.isSelected()) {
+                                    listaEtiquetas.add(chkCultura.getText());
+                                }
+
+                                if (chkGastronomia.isSelected()) {
+                                    listaEtiquetas.add(chkGastronomia.getText());
+                                }
+
+                                if (chkOcio.isSelected()) {
+                                    listaEtiquetas.add(chkOcio.getText());
+                                }
+                                String etiquetas = "";
+                                if (!listaEtiquetas.isEmpty()) {
+                                                System.out.println("PASA POR AQUI 4");
+                                    for (String etiqueta : listaEtiquetas) {
+                                        etiquetas += etiqueta + ",";
+                                    }
+                                    etiquetas = etiquetas.substring(0, etiquetas.length() - 1);
+
+                                    long id = 0;
+                                    for (DataSnapshot dataSnapshot : ds.getChildren()) {
+                                        id = dataSnapshot.child("id").getValue(Integer.class);
+                                    }
+                                    
+                                    nombreImagen = titulo + id;
+                                    
+                                    desafio = new Desafio(id, titulo, descripcion, ciudad, etiquetas, "");
+                                    System.out.println("PASA POR AQUI 5");
+                                    mostrarExperiencias(true);
+                                    mostrarMensaje("Añada experiencias al desafío", 0);
+                                    
+                                } else {
+                                    mostrarMensaje("Es necesario escoger etiquetas para el desafío", 1);
+                                }
+                                
+                            } else {
+                                mostrarMensaje("Añada una ciudad al desafío", 1);
+                            }
+
+                        } else {
+                            mostrarMensaje("Debe añadir una descripción", 1);
+                        }
+
+                    } else {
+                        mostrarMensaje("Ya existe un desafío con este título", 2);
+                        
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError de) {
+
+                }
+            });
+        } else {
+            mostrarMensaje("Necesitas introducir un titulo al desafío a añadir", 1);
+        }
     }
 
+    /**
+     * Método para añadir experiencias al desafío
+     * @param event 
+     */
+    @FXML
+    private void handleBtnAniadirExpAction(ActionEvent event) {
+        String titulo = tfTituloExp.getText().trim();
+        
+        if(!titulo.isEmpty()){
+            
+                String descripcion = taDescripcionExp.getText().trim();
+                
+                if(!descripcion.isEmpty()){
+                    
+                    String direccion = tfDireccion.getText().trim();
+                    
+                    if(!direccion.isEmpty()){
+                        
+                        String latitud = tfLatitud.getText().trim();
+                        String longitud = tfLongitud.getText().trim();
+                        
+                        if(!latitud.isEmpty() || !longitud.isEmpty()){
+                            String coordenadas = latitud + "," + longitud;
+                            
+                            
+                            Blob blob = bucket.get(nombreImagen + ".png");
+                            if(blob != null){
+                                
+                                if(listaExp.isEmpty()){
+                                    refExp.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot ds) {
+
+                                            long id = ds.getChildrenCount();
+                                            listaExp.add(new Experiencia(id, titulo, descripcion, direccion, blob.getMediaLink(), coordenadas));
+                                            btnAniadirDesafio.setVisible(true);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError de) {
+
+                                        }
+                                    });
+                                } else {
+                                    long id = listaExp.get(listaExp.size() - 1).getId() + 1;
+                                    System.out.println("IMAGEN: " + blob.getMediaLink());
+                                    listaExp.add(new Experiencia(id, titulo, descripcion, direccion, blob.getMediaLink(), coordenadas));
+                                }
+                                mostrarMensaje("Experiencia añadida con exito", 0);
+                                limpiarCamposExp();
+                            } else {
+                                mostrarMensaje("Debes añadir una imágen", 1);
+                            }
+                            
+                        } else {
+                            mostrarMensaje("Debes rellenar la latitud y la longitud", 1);
+                        }
+                        
+                    } else {
+                        mostrarMensaje("Introduce la dirección", 1);
+                    }
+                    
+                } else {
+                    mostrarMensaje("Introduce una descripción", 1);
+                }
+                
+        } else {
+            mostrarMensaje("Es necesario que la experiencia tenga título", 1);
+        }
+    }
+
+    /**
+     * Método para subir el desafío y las experiencias a la base de datos en Firebase
+     * @param event 
+     */
+    @FXML
+    private void handleBtnAniadirDesafioAction(ActionEvent event) {
+        String experiencias = "";
+            for (int i = 0; i < listaExp.size(); i++) {
+                if(i == listaExp.size() - 1){
+                    experiencias = String.valueOf(listaExp.get(i).getId());                    
+                } else {
+                    experiencias = String.valueOf(listaExp.get(i).getId()) + ",";
+                }
+            }
+            
+            desafio.setExperiencias(experiencias);
+        
+        CompletableFuture.runAsync(() ->{
+            try {
+                ApiFuture<Void>future =  refDef.child(desafio.getTitulo()).setValueAsync(desafio);
+                future.get();
+                
+                for(Experiencia exp : listaExp){
+                    future = refExp.child(String.valueOf(exp.getId())).setValueAsync(exp);
+                    future.get();
+                }
+                
+                Alert alerta = new Alert(Alert.AlertType.ERROR, "Desafio creado con exito");
+                alerta.showAndWait();
+                
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ExecutionException ex) {
+                Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
+
+    /**
+     * Método para subir una imágen a Firebase Storage
+     * @param event 
+     */
     @FXML
     private void handleInsertarImagenAction(ActionEvent event) {
+         FileChooser fc = new FileChooser();
+        fc.setTitle("Selecciona una imagen");
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("imagenes","*.png"));
+        
+        File img = fc.showOpenDialog(null);
+        
+        if(img != null){
+            
+            String nuevoArchivo = nombreImagen + ".png";
+            
+            File destino = new File("src/main/java/dam/di/gestorcontenido/img/");
+            
+            File archivo = new File(destino, nuevoArchivo);
+            
+            ivExperiencia.setImage(new Image(archivo.toURI().toString()));
+
+            Bucket.BlobWriteOption precondition = Bucket.BlobWriteOption.doesNotExist();
+            
+             try {
+                bucket.create(nuevoArchivo, new FileInputStream(img), precondition);
+             } catch (IOException ex) {
+                 Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+             }
+        }
+    }
+
+    /**
+     * Método para habilitar añadir experiencias
+     * @param mostrar 
+     */
+    public void mostrarExperiencias(boolean mostrar) {
+        lblTituloExp.setVisible(mostrar);
+        lblTitulo.setVisible(mostrar);
+        tfTituloExp.setVisible(mostrar);
+        lblDescripcion.setVisible(mostrar);
+        taDescripcionExp.setVisible(mostrar);
+        lblCoordenadas.setVisible(mostrar);
+        lblDireccion.setVisible(mostrar);
+        tfDireccion.setVisible(mostrar);
+        tfLatitud.setVisible(mostrar);
+        tfLongitud.setVisible(mostrar);
+        btnAniadirExp.setVisible(mostrar);
+        btnCrearDes.setDisable(mostrar);
+        tfTituloDes.setDisable(mostrar);
+        tfCiudad.setDisable(mostrar);
+        taDescripcionDes.setDisable(mostrar);
+        chkArte.setDisable(mostrar);
+        chkOcio.setDisable(mostrar);
+        chkGastronomia.setDisable(mostrar);
+        chkCultura.setDisable(mostrar);
+        btnImagen.setVisible(mostrar);
+    }
+
+    /**
+     * Método para reiniciar los campos al añadir una experiencia
+     */
+    public void limpiarCamposExp() {
+        tfTituloExp.setText("");
+        taDescripcionExp.setText("");
+        tfDireccion.setText("");
+        ivExperiencia.setImage(imagenDefault);
+        tfLatitud.setText("");
+        tfLongitud.setText("");
+    }
+
+    /**
+     * Método para mostrar mensajes emergentes
+     * @param mensaje Mensaje que se va a mostrar en el Alert
+     * @param tipo Sirve para indicar si el Alert va a ser informativo o de error
+     */
+    public void mostrarMensaje(String mensaje, int tipo){
+        Alert alerta;
+        if(tipo == 1){
+            alerta = new Alert(Alert.AlertType.ERROR, mensaje);
+        } else {
+            alerta = new Alert(Alert.AlertType.INFORMATION, mensaje);
+        }
+        alerta.showAndWait();
     }
     
 }

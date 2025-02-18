@@ -3,7 +3,11 @@
  */
 
 .mainFxmlClass {
-    -fx-background-color:  #1FCE7D;
+        -fx-background-color: #ffffff;
+}
+
+.pane{
+    -fx-background-color: #1FCE7D;
 }
 
 .button{
@@ -18,7 +22,8 @@
     -fx-alignment: center;
 }
 
-#lblTitulo{
+#lblTituloMain{
     -fx-font-weight: bold;
     -fx-font-size: 30px;
+    -fx-text-fill: white;
 }

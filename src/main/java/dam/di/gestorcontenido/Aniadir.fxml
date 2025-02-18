@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="516.0" prefWidth="754.0" styleClass="mainFxmlClass" stylesheets="@modificaraniadir.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.di.gestorcontenido.ModificarAniadirController">
+<AnchorPane id="AnchorPane" prefHeight="516.0" prefWidth="715.0" styleClass="mainFxmlClass" stylesheets="@modificaraniadir.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.di.gestorcontenido.ModificarAniadirController">
    <children>
       <TextField fx:id="tfTituloDes" layoutX="125.0" layoutY="54.0" promptText="Título del desafío">
          <tooltip>
@@ -48,61 +48,61 @@
       <CheckBox fx:id="chkArte" layoutX="68.0" layoutY="408.0" mnemonicParsing="false" text="Arte" />
       <CheckBox fx:id="chkOcio" layoutX="174.0" layoutY="408.0" mnemonicParsing="false" text="Ocio" />
       <CheckBox fx:id="chkGastronomia" layoutX="67.0" layoutY="374.0" mnemonicParsing="false" text="Gastronomía" />
-      <TextField fx:id="tfTituloExp" layoutX="581.0" layoutY="54.0" promptText="Título de la experiencia" visible="false">
+      <TextField fx:id="tfTituloExp" layoutX="551.0" layoutY="55.0" promptText="Título de la experiencia" visible="false">
          <tooltip>
             <Tooltip text="Introduce el título del desafío a añadir" />
          </tooltip>
       </TextField>
-      <Label layoutX="488.0" layoutY="57.0" text="Título" visible="false">
+      <Label fx:id="lblTitulo" layoutX="458.0" layoutY="58.0" text="Título" visible="false">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label id="lblTitulo1" layoutX="120.0" layoutY="14.0" prefHeight="28.0" prefWidth="73.0" text="Desafío" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="560.8">
+      <Label id="lblTitulo1" layoutX="120.0" layoutY="14.0" prefHeight="28.0" prefWidth="82.0" text="Desafío" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="513.0">
          <font>
             <Font size="19.0" />
          </font>
       </Label>
-      <Label id="lblTitulo2" layoutX="519.0" layoutY="13.0" prefHeight="30.0" prefWidth="123.0" text=" Experiencia" visible="false" AnchorPane.leftAnchor="519.0" AnchorPane.rightAnchor="112.19999999999993">
+      <Label id="lblTitulo2" fx:id="lblTituloExp" layoutX="488.0" layoutY="14.0" prefHeight="30.0" prefWidth="123.0" text=" Experiencia" visible="false" AnchorPane.leftAnchor="488.0" AnchorPane.rightAnchor="104.0">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="434.0" layoutY="95.0" text="Descripción" visible="false">
+      <Label fx:id="lblDescripcion" layoutX="404.0" layoutY="96.0" text="Descripción" visible="false">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <TextArea fx:id="taDescripcionExp" layoutX="528.0" layoutY="94.0" prefHeight="122.0" prefWidth="200.0" promptText="Introduce una descripción" text="&#10;" visible="false" />
-      <TextField fx:id="tfDireccion" layoutX="581.0" layoutY="231.0" promptText="Dirección" visible="false">
+      <TextArea fx:id="taDescripcionExp" layoutX="498.0" layoutY="95.0" prefHeight="122.0" prefWidth="200.0" promptText="Introduce una descripción" text="&#10;" visible="false" />
+      <TextField fx:id="tfDireccion" layoutX="551.0" layoutY="232.0" promptText="Dirección" visible="false">
          <tooltip>
             <Tooltip text="Introduce el título del desafío a añadir" />
          </tooltip>
       </TextField>
-      <Label layoutX="477.0" layoutY="234.0" text="Dirección" visible="false">
+      <Label fx:id="lblDireccion" layoutX="447.0" layoutY="235.0" text="Dirección" visible="false">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="526.0" layoutY="269.0" text="Coordenadas" visible="false">
+      <Label fx:id="lblCoordenadas" layoutX="496.0" layoutY="270.0" text="Coordenadas" visible="false">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="tfLatitud" layoutX="433.0" layoutY="296.0" prefHeight="26.0" prefWidth="123.0" promptText="Latitud" visible="false">
+      <TextField fx:id="tfLatitud" layoutX="403.0" layoutY="297.0" prefHeight="26.0" prefWidth="123.0" promptText="Latitud" visible="false">
          <tooltip>
-            <Tooltip text="Introduce el título del desafío a añadir" />
+            <Tooltip text="Introduce la latitud donde se encuentra la experiencia" />
          </tooltip>
       </TextField>
-      <TextField fx:id="tfLongitud" layoutX="579.0" layoutY="296.0" prefHeight="26.0" prefWidth="123.0" promptText="Longitud" visible="false">
+      <TextField fx:id="tfLongitud" layoutX="549.0" layoutY="297.0" prefHeight="26.0" prefWidth="123.0" promptText="Longitud" visible="false">
          <tooltip>
-            <Tooltip text="Introduce el título del desafío a añadir" />
+            <Tooltip text="Introduce la longitud donde se encuentra la experiencia" />
          </tooltip>
       </TextField>
-      <Button fx:id="btnAniadirExp" layoutX="510.0" layoutY="439.0" mnemonicParsing="false" onAction="#handleBtnAniadirExpAction" text="Añadir Experiencia" visible="false" />
+      <Button fx:id="btnAniadirExp" layoutX="480.0" layoutY="440.0" mnemonicParsing="false" onAction="#handleBtnAniadirExpAction" text="Añadir Experiencia" visible="false" />
       <Button fx:id="btnAniadirDesafio" layoutX="330.0" layoutY="465.0" mnemonicParsing="false" onAction="#handleBtnAniadirDesafioAction" text="Añadir Desafío" visible="false" />
       <Button fx:id="btnCrearDes" layoutX="107.0" layoutY="439.0" mnemonicParsing="false" onAction="#handleBtnCrearDesafioAction" text="Crear Desafío" />
-      <Button fx:id="btnImagen" layoutX="541.0" layoutY="336.0" mnemonicParsing="false" onAction="#handleInsertarImagenAction" stylesheets="@modificaraniadir.css">
+      <Button fx:id="btnImagen" layoutX="495.0" layoutY="336.0" mnemonicParsing="false" onAction="#handleInsertarImagenAction" stylesheets="@modificaraniadir.css" visible="false">
          <graphic>
             <ImageView id="imagen" fx:id="ivExperiencia" fitHeight="83.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
                <image>

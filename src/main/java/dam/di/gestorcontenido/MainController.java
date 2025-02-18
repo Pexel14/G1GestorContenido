@@ -4,6 +4,7 @@
  */
 package dam.di.gestorcontenido;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -37,14 +38,20 @@ public class MainController implements Initializable {
     @FXML
     private AnchorPane contenido;
     @FXML
-    private Label lblTitulo;
+    private Label lblTituloMain;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        try {
+            File archivo = new File("src/main/java/dam/di/gestorcontenido/Aniadir.fxml");
+            AnchorPane inicio = FXMLLoader.load(archivo.toURI().toURL());
+            contenido.getChildren().setAll(inicio);
+        } catch (IOException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }    
 
 
@@ -54,23 +61,50 @@ public class MainController implements Initializable {
 
     @FXML
     private void handleAniadirAction(ActionEvent event) {
-    }
-
-    @FXML
-    private void handleModificarButton(ActionEvent event) {
-    }
-
-    @FXML
-    private void handleEliminarButton(ActionEvent event) {
-                try {
-            AnchorPane contenido = FXMLLoader.load(getClass().getResource("Aniadir.fxml"));
-            contenido.getChildren().setAll(contenido);
+        try {
+            File archivo = new File("src/main/java/dam/di/gestorcontenido/Aniadir.fxml");
+            AnchorPane aniadir = FXMLLoader.load(archivo.toURI().toURL());
+            contenido.getChildren().setAll(aniadir);
             Stage stage = (Stage) contenido.getScene().getWindow();
             stage.getIcons().clear();
             //Image icon = new Image(getClass().getResourceAsStream("img/iconoPer.png"));
             //stage.getIcons().add(icon);
             stage.setTitle("Crear Desafío");
-            lblTitulo.setText("Crear Desafío");
+            lblTituloMain.setText("Crear Desafío");
+        } catch (IOException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void handleModificarButton(ActionEvent event) {
+        try {
+            File archivo = new File("src/main/java/dam/di/gestorcontenido/Modificar.fxml");
+            AnchorPane modificar = FXMLLoader.load(archivo.toURI().toURL());
+            contenido.getChildren().setAll(modificar);
+            Stage stage = (Stage) contenido.getScene().getWindow();
+            stage.getIcons().clear();
+            //Image icon = new Image(getClass().getResourceAsStream("img/iconoPer.png"));
+            //stage.getIcons().add(icon);
+            stage.setTitle("Modificar Desafío");
+            lblTituloMain.setText("Modificar Desafío");
+        } catch (IOException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void handleEliminarButton(ActionEvent event) {
+        try {
+            File archivo = new File("src/main/java/dam/di/gestorcontenido/Eliminar.fxml");
+            AnchorPane eliminar = FXMLLoader.load(archivo.toURI().toURL());
+            contenido.getChildren().setAll(eliminar);
+            Stage stage = (Stage) contenido.getScene().getWindow();
+            stage.getIcons().clear();
+            //Image icon = new Image(getClass().getResourceAsStream("img/iconoPer.png"));
+            //stage.getIcons().add(icon);
+            stage.setTitle("Eliminar Desafío");
+            lblTituloMain.setText("Eliminar Desafío");
         } catch (IOException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }

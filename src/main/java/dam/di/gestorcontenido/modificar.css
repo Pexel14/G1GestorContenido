@@ -20,11 +20,3 @@
 .check-box:selected .box{
     -fx-background-color: #1FCE7D;
 }
-
-#lblTitulo1{
-    -fx-font-weight: bold;
-}
-
-#lblTitulo2{
-    -fx-font-weight: bold;
-}
