@@ -5,8 +5,9 @@
 package dam.di.gestorcontenido;
 
 /**
- *
- * @author ignac
+ * Representa un desafío
+ * Contiene un id, título, descripción, ciudad, etiquetas y experiencias
+ * @author Axel
  */
 public class Desafio {
     private long id;
@@ -16,6 +17,16 @@ public class Desafio {
     private String etiquetas;
     private String experiencias;
 
+    /**
+     * Constructor que crea una instancia de Desafio
+     * 
+     * @param id Identificador único del desafío
+     * @param titulo Título del desafío
+     * @param descripcion Descripción del desafío
+     * @param ciudad Ciudad donde se encuentra el desafío
+     * @param etiquetas Etiquetas del desafío
+     * @param experiencias Experiencias que contiene el desafío
+     */
     public Desafio(long id, String titulo, String descripcion, String ciudad, String etiquetas, String experiencias) {
         this.id = id;
         this.titulo = titulo;

@@ -15,7 +15,7 @@
             <Pane layoutX="187.0" prefHeight="94.0" prefWidth="715.0" style="-fx-background-color: #1FCE7D;" stylesheets="@main.css" />
          </children>
       </Pane>
-      <VBox id="caja" layoutX="14.0" layoutY="110.0" prefHeight="380.0" prefWidth="131.0" stylesheets="@main.css">
+      <VBox id="caja" layoutX="25.0" layoutY="110.0" prefHeight="380.0" prefWidth="131.0" stylesheets="@main.css">
          <children>
             <Button fx:id="btnAniadir" mnemonicParsing="false" onAction="#handleAniadirAction">
                <graphic>
@@ -56,7 +56,14 @@
          </children>
       </VBox>
       <Label fx:id="lblTituloMain" alignment="CENTER" layoutX="263.0" layoutY="30.0" prefHeight="46.0" prefWidth="638.0" text="Añadir Desafíos" textAlignment="CENTER" />
-      <Button layoutX="809.0" layoutY="34.0" mnemonicParsing="false" text="AYUDA" />
+      <Button fx:id="btnAyuda" layoutX="775.0" layoutY="16.0" mnemonicParsing="false" onAction="#handleBtnAyudaAction">
+         <graphic>
+            <ImageView fitHeight="65.0" fitWidth="95.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/informacion.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
       <AnchorPane fx:id="contenido" layoutX="186.0" layoutY="94.0" prefHeight="506.0" prefWidth="715.0" />
    </children>
 </AnchorPane>

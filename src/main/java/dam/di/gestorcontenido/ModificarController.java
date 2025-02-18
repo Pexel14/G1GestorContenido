@@ -15,7 +15,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,9 +42,9 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
 /**
- * FXML Controller class
+ * Clase controladora de la vista Modificar.fxml
  *
- * @author ignac
+ * @author Axel
  */
 public class ModificarController implements Initializable {
 
@@ -149,7 +148,11 @@ public class ModificarController implements Initializable {
             Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
-
+    
+    /**
+     * Método para mover la lista mostrada de las experiencias para atrás
+     * @param event 
+     */
     @FXML
     private void handleAnteriorExperienciaAction(ActionEvent event) {
         if (posicion == 0) {
@@ -161,7 +164,11 @@ public class ModificarController implements Initializable {
         insertarExperiencia(posicion);
 
     }
-
+    
+    /**
+     * Método para mover la lista mostrada de las experiencias para adelante
+     * @param event 
+     */
     @FXML
     private void handleSiguienteExperienciaAction(ActionEvent event) {
         if (posicion == listaExp.size() -1) {
@@ -174,6 +181,10 @@ public class ModificarController implements Initializable {
 
     }
 
+    /**
+     * Método para buscar el desafío introducido por el usuario dentro de la base de datos
+     * @param event 
+     */
     @FXML
     private void handleBtnBuscarAction(ActionEvent event) {
         String titulo = tfDesafio.getText();
@@ -244,6 +255,10 @@ public class ModificarController implements Initializable {
         }
     }
 
+    /**
+     * Método para añadir las modificaciones realizadas en el desafío a la base de datos
+     * @param event 
+     */
     @FXML
     private void handleBtnModDesafioAction(ActionEvent event) {
         String ciudad = tfCiudadDes.getText().trim();
@@ -294,6 +309,10 @@ public class ModificarController implements Initializable {
         
     }
 
+    /**
+     * Método para añadir las modificaciones de la experiencia seleccionada a la base de datos
+     * @param event 
+     */
     @FXML
     private void handleBtnModExperienciaAction(ActionEvent event) {
         String titulo = tfTitulo.getText();
@@ -333,7 +352,12 @@ public class ModificarController implements Initializable {
         }
     }
     
+    /**
+     * Método para rellenar una lista de experiencias con las experiencias del desafío buscado
+     * @param experiencias Array con las experiencias de un desafío
+     */
     public void rellenarContenido(String[] experiencias) {
+        listaExp.clear();
         refExp.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot ds) {
@@ -368,17 +392,24 @@ public class ModificarController implements Initializable {
         });
     }
     
+    /**
+     * Método para introducir el contenido de una experiencia en los campos de la vista
+     * @param index Índice para buscar en la lista de experiencias
+     */
     public void insertarExperiencia(int index) {
         tfTitulo.setText(listaExp.get(index).getTitulo());
         tfDescripcionExp.setText(listaExp.get(index).getDescripcion());
         tfDireccionExp.setText(listaExp.get(index).getDireccion());
         imagen = listaExp.get(index).getImagen();
-        System.out.println("IMAGEN: " + imagen);
         ivExperiencia.setImage(new Image(imagen));
         tfLatitud.setText(listaExp.get(index).getCoordenadas().split(",")[0]);
         tfLongitud.setText(listaExp.get(index).getCoordenadas().split(",")[1]);
     }
     
+    /**
+     * Método para habilitar los componentes de la interfaz
+     * @param habilitar 
+     */
     public void habilitarBotones(boolean habilitar){
         tfCiudadDes.setDisable(habilitar);
         tfDireccionExp.setDisable(habilitar);
@@ -398,6 +429,10 @@ public class ModificarController implements Initializable {
         btnImagen.setDisable(habilitar);
     }
 
+    /**
+     * Método para subir una imagen a Firebase Storage, reemplazando la imagen antigua
+     * @param event 
+     */
     @FXML
     private void handleInsertarImagenAction(ActionEvent event) {
                  FileChooser fc = new FileChooser();

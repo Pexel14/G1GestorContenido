@@ -5,7 +5,8 @@
 package dam.di.gestorcontenido;
 
 /**
- *
+ * Representa una experiencia
+ * Contiene el ID, título, descripción, dirección, imagen y coordenadas de una experiencia
  * @author ignac
  */
 public class Experiencia {
@@ -16,6 +17,16 @@ public class Experiencia {
     private String imagen;
     private String coordenadas;
 
+    /**
+     * Constructor para crear una instancia de Experiencia
+     * 
+     * @param id Identificador único de la experiencia
+     * @param titulo Título de la experiencia
+     * @param descripcion Descripción de la experiencia
+     * @param direccion Dirección donde se encuentra la experiencia
+     * @param imagen Imagen de la experiencia
+     * @param coordenadas Coordenadas donde se encuentra la experiencia
+     */
     public Experiencia(long id, String titulo, String descripcion, String direccion, String imagen, String coordenadas) {
         this.id = id;
         this.titulo = titulo;

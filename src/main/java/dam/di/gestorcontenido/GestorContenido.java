@@ -15,8 +15,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- *
- * @author ignac
+ * Clase ejecutable
+ * @author Axel
  */
 public class GestorContenido extends Application {
 

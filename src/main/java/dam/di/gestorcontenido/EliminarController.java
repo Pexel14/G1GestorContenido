@@ -31,9 +31,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 /**
- * FXML Controller class
+ * Clase controladora para la vista de Eliminar.fxml
  *
- * @author ignac
+ * @author Axel
  */
 public class EliminarController implements Initializable {
 
@@ -79,7 +79,8 @@ public class EliminarController implements Initializable {
     private static int posicion;
 
     /**
-     * Initializes the controller class.
+     * Inicializa el punto de entrada de las dependencias de Firebase.
+     * También inicializa las referencias de 'desafios' y 'experiencias' de la base de datos.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {

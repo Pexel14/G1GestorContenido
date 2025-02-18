@@ -16,17 +16,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
- * FXML Controller class
+ * Clase controladora para la vista Main.fxml
  *
- * @author ignac
+ * @author Axel
  */
 public class MainController implements Initializable {
-
     @FXML
     private Button btnAniadir;
     @FXML
@@ -39,9 +37,11 @@ public class MainController implements Initializable {
     private AnchorPane contenido;
     @FXML
     private Label lblTituloMain;
+    @FXML
+    private Button btnAyuda;
 
     /**
-     * Initializes the controller class.
+     * Carga la vista Aniadir.fxml al iniciar la aplicacion .
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -54,11 +54,19 @@ public class MainController implements Initializable {
         }
     }    
 
-
+    /**
+     * Método para salir de la aplicación
+     * @param event 
+     */
     @FXML
     private void handleSalirButton(ActionEvent event) {
+        System.exit(0);
     }
 
+    /**
+     * Método para cargar el panel de Aniadir.fxml
+     * @param event 
+     */
     @FXML
     private void handleAniadirAction(ActionEvent event) {
         try {
@@ -76,6 +84,10 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * Método para cargar el panel de Modificar.fxml
+     * @param event 
+     */
     @FXML
     private void handleModificarButton(ActionEvent event) {
         try {
@@ -93,6 +105,10 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * Método para cargar el panel de Eliminar.fxml
+     * @param event 
+     */
     @FXML
     private void handleEliminarButton(ActionEvent event) {
         try {
@@ -108,6 +124,10 @@ public class MainController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @FXML
+    private void handleBtnAyudaAction(ActionEvent event) {
     }
     
 }
