@@ -21,13 +21,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
@@ -48,7 +45,7 @@ import javafx.stage.FileChooser;
  *
  * @author Axel
  */
-public class ModificarAniadirController implements Initializable {
+public class AniadirController implements Initializable {
 
     @FXML
     private TextField tfTituloDes;
@@ -95,14 +92,50 @@ public class ModificarAniadirController implements Initializable {
     @FXML
     private Label lblCoordenadas;
     
+    /**
+     * Instancia de la base de datos en Firebase Database
+     */
     private FirebaseDatabase db;
+    
+    /**
+     * Referencia al nodo 'desafios' en la base de datos
+     */
     private DatabaseReference refDef;
+    
+    /**
+     * Referencia al nodo 'experiencias' en la base de datos
+     */
     private DatabaseReference refExp;
+    
+    /**
+     * Objeto de tipo Desafio
+     */
     private Desafio desafio;
+    
+    /**
+     * Lista de experiencias
+     */
     private ArrayList<Experiencia> listaExp;
+    
+    /**
+     * Nombre de la imagen almacenada en Firebase Storage
+     */
     private String nombreImagen;
+    
+    /**
+     * Imagen inicial del botón
+     */
     private Image imagenDefault;
+    
+    /**
+     * Bucket que contiene imágenes en Firebase Storage
+     */
     private Bucket bucket;
+    
+    /**
+     * Identificador de la experiencia
+     */
+    private long id_exp;
 
     /**
      * Inicializa el punto de entrada de las dependencias de Firebase.
@@ -118,9 +151,9 @@ public class ModificarAniadirController implements Initializable {
                 FirebaseOptions options = new FirebaseOptions.Builder()
                         .setCredentials(GoogleCredentials.fromStream(credenciales))
                         .setDatabaseUrl("https://pipas-pruebas-default-rtdb.firebaseio.com/")
-                        .setStorageBucket("pipas-pruebas.firebasestorage.app")
+                        .setStorageBucket("pipas-pruebas.firebasestorage.app/")
                     .build();
-
+                
                 FirebaseApp.initializeApp(options);
             }
             
@@ -135,9 +168,9 @@ public class ModificarAniadirController implements Initializable {
             imagenDefault = ivExperiencia.getImage();
             
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AniadirController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AniadirController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -204,7 +237,7 @@ public class ModificarAniadirController implements Initializable {
                                         id = dataSnapshot.child("id").getValue(Integer.class);
                                     }
                                     
-                                    nombreImagen = titulo + id;
+                                    nombreImagen = "imagenes/" + titulo;
                                     
                                     desafio = new Desafio(id, titulo, descripcion, ciudad, etiquetas, "");
                                     System.out.println("PASA POR AQUI 5");
@@ -265,15 +298,23 @@ public class ModificarAniadirController implements Initializable {
                             String coordenadas = latitud + "," + longitud;
                             
                             
-                            Blob blob = bucket.get(nombreImagen + ".png");
+                            Blob blob = bucket.get(nombreImagen);
+                            System.out.println("IMAGEN AÑADIR: " + nombreImagen);
+                            
+                            nombreImagen = nombreImagen.substring(0, nombreImagen.lastIndexOf("_"));
                             if(blob != null){
                                 
                                 if(listaExp.isEmpty()){
                                     refExp.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot ds) {
-
-                                            long id = ds.getChildrenCount();
+                                            long id = 0;
+                                            
+                                            for (DataSnapshot snapshot : ds.getChildren()) {
+                                                id = snapshot.child("id").getValue(Long.class);
+                                            }
+                                            id++;
+                                            id_exp = id;
                                             listaExp.add(new Experiencia(id, titulo, descripcion, direccion, blob.getMediaLink(), coordenadas));
                                             btnAniadirDesafio.setVisible(true);
                                         }
@@ -320,10 +361,11 @@ public class ModificarAniadirController implements Initializable {
         String experiencias = "";
             for (int i = 0; i < listaExp.size(); i++) {
                 if(i == listaExp.size() - 1){
-                    experiencias = String.valueOf(listaExp.get(i).getId());                    
+                    experiencias += String.valueOf(listaExp.get(i).getId());                    
                 } else {
-                    experiencias = String.valueOf(listaExp.get(i).getId()) + ",";
+                    experiencias += String.valueOf(listaExp.get(i).getId()) + ",";
                 }
+                System.out.println("EXPERIENCIAS DESAFIO: " + experiencias);
             }
             
             desafio.setExperiencias(experiencias);
@@ -333,18 +375,22 @@ public class ModificarAniadirController implements Initializable {
                 ApiFuture<Void>future =  refDef.child(desafio.getTitulo()).setValueAsync(desafio);
                 future.get();
                 
+                ApiFuture<Void> future2;
                 for(Experiencia exp : listaExp){
-                    future = refExp.child(String.valueOf(exp.getId())).setValueAsync(exp);
-                    future.get();
+                    future2 = refExp.child(String.valueOf(exp.getId())).setValueAsync(exp);
+                    Thread.sleep(3000);
+                    future2.get();
                 }
                 
+                mostrarExperiencias(false);
+                limpiarCamposDesafio();
                 Alert alerta = new Alert(Alert.AlertType.ERROR, "Desafio creado con exito");
                 alerta.showAndWait();
                 
             } catch (InterruptedException ex) {
-                Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AniadirController.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ExecutionException ex) {
-                Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AniadirController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
     }
@@ -355,28 +401,29 @@ public class ModificarAniadirController implements Initializable {
      */
     @FXML
     private void handleInsertarImagenAction(ActionEvent event) {
-         FileChooser fc = new FileChooser();
+        FileChooser fc = new FileChooser();
         fc.setTitle("Selecciona una imagen");
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("imagenes","*.png"));
         
         File img = fc.showOpenDialog(null);
         
         if(img != null){
+            if(!listaExp.isEmpty()){
+                id_exp = listaExp.get(listaExp.size()-1).getId();
+            }
             
-            String nuevoArchivo = nombreImagen + ".png";
+            nombreImagen += "_" + id_exp + ".png";
             
-            File destino = new File("src/main/java/dam/di/gestorcontenido/img/");
+            System.out.println("IMAGEN AÑADIR 2: " + nombreImagen);
             
-            File archivo = new File(destino, nuevoArchivo);
-            
-            ivExperiencia.setImage(new Image(archivo.toURI().toString()));
+            ivExperiencia.setImage(new Image(img.toURI().toString()));
 
             Bucket.BlobWriteOption precondition = Bucket.BlobWriteOption.doesNotExist();
             
              try {
-                bucket.create(nuevoArchivo, new FileInputStream(img), precondition);
+                 bucket.create(nombreImagen, new FileInputStream(img),  "image/png", precondition);
              } catch (IOException ex) {
-                 Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+                 Logger.getLogger(AniadirController.class.getName()).log(Level.SEVERE, null, ex);
              }
         }
     }
@@ -433,6 +480,19 @@ public class ModificarAniadirController implements Initializable {
             alerta = new Alert(Alert.AlertType.INFORMATION, mensaje);
         }
         alerta.showAndWait();
+    }
+
+    /**
+     * Limpia los campos del desafíos
+     */
+    private void limpiarCamposDesafio() {
+        tfCiudad.setText("");
+        tfTituloDes.setText("");
+        taDescripcionDes.setText("");
+        chkArte.setSelected(false);
+        chkOcio.setSelected(false);
+        chkGastronomia.setSelected(false);
+        chkCultura.setSelected(false);
     }
     
 }

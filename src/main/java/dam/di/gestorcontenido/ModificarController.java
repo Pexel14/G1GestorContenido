@@ -7,6 +7,7 @@ package dam.di.gestorcontenido;
 import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Bucket;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -126,7 +127,7 @@ public class ModificarController implements Initializable {
                 FirebaseOptions options = new FirebaseOptions.Builder()
                         .setCredentials(GoogleCredentials.fromStream(credenciales))
                         .setDatabaseUrl("https://pipas-pruebas-default-rtdb.firebaseio.com/")
-                        .setStorageBucket("pipas-pruebas.firebasestorage.app")
+                        .setStorageBucket("pipas-pruebas.firebasestorage.app/")
                     .build();
 
                 FirebaseApp.initializeApp(options);
@@ -143,9 +144,9 @@ public class ModificarController implements Initializable {
             imagenDefault = ivExperiencia.getImage();
             
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AniadirController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AniadirController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
     
@@ -234,7 +235,7 @@ public class ModificarController implements Initializable {
                                     etiquetas, 
                                     experiencias
                             );
-                            nombreImagen = titulo + id;
+                            nombreImagen = "imagenes/" + titulo;
                         }
                     }
 
@@ -295,9 +296,9 @@ public class ModificarController implements Initializable {
                         future.get();
 
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(AniadirController.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (ExecutionException ex) {
-                        Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(AniadirController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 });
 
@@ -329,7 +330,7 @@ public class ModificarController implements Initializable {
                     listaExp.get(posicion).setDireccion(direccion);
                     
                     if(!latitud.isEmpty() && !longitud.isEmpty()){
-                        listaExp.get(posicion).setCoordenadas(latitud + "," +longitud);
+                        listaExp.get(posicion).setCoordenadas(latitud + "," + longitud);
                     }
                     
                     CompletableFuture.runAsync(() ->{
@@ -338,9 +339,9 @@ public class ModificarController implements Initializable {
                             future.get();
 
                         } catch (InterruptedException ex) {
-                            Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(AniadirController.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (ExecutionException ex) {
-                            Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(AniadirController.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     });
                     
@@ -364,6 +365,7 @@ public class ModificarController implements Initializable {
                 String id = "";
                 for (DataSnapshot snapshot : ds.getChildren()) {
                     id = snapshot.getKey();
+                    nombreImagen += "_" + id;
                     System.out.println("ID exp: " + id);
                     System.out.println("Experiencias: " + Arrays.toString(experiencias));
                     for (int i = 0; i < experiencias.length; i++) {
@@ -401,9 +403,12 @@ public class ModificarController implements Initializable {
         tfDescripcionExp.setText(listaExp.get(index).getDescripcion());
         tfDireccionExp.setText(listaExp.get(index).getDireccion());
         imagen = listaExp.get(index).getImagen();
-        ivExperiencia.setImage(new Image(imagen));
-        tfLatitud.setText(listaExp.get(index).getCoordenadas().split(",")[0]);
-        tfLongitud.setText(listaExp.get(index).getCoordenadas().split(",")[1]);
+        if(imagen != null){
+            ivExperiencia.setImage(new Image(imagen));
+        }
+        String [] coordenadas = listaExp.get(index).getCoordenadas().split(",");
+        tfLatitud.setText(coordenadas[0]);
+        tfLongitud.setText(coordenadas[1]);
     }
     
     /**
@@ -435,7 +440,7 @@ public class ModificarController implements Initializable {
      */
     @FXML
     private void handleInsertarImagenAction(ActionEvent event) {
-                 FileChooser fc = new FileChooser();
+        FileChooser fc = new FileChooser();
         fc.setTitle("Selecciona una imagen");
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("imagenes","*.png"));
         
@@ -445,11 +450,7 @@ public class ModificarController implements Initializable {
             
             String nuevoArchivo = nombreImagen + ".png";
             
-            File destino = new File("src/main/java/dam/di/gestorcontenido/img/");
-            
-            File archivo = new File(destino, nuevoArchivo);
-            
-            ivExperiencia.setImage(new Image(archivo.toURI().toString()));
+            ivExperiencia.setImage(new Image(img.toURI().toString()));
 
             Bucket.BlobWriteOption precondition = Bucket.BlobWriteOption.doesNotExist();
             
@@ -460,9 +461,9 @@ public class ModificarController implements Initializable {
             }
             
              try {
-                bucket.create(nuevoArchivo, new FileInputStream(img), precondition);
+                bucket.create(nuevoArchivo, new FileInputStream(img),  "image/png", precondition);
              } catch (IOException ex) {
-                 Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+                 Logger.getLogger(AniadirController.class.getName()).log(Level.SEVERE, null, ex);
              }
         }
     }

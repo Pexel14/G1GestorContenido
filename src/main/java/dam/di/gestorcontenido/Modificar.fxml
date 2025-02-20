@@ -15,24 +15,33 @@
    <children>
       <TextField fx:id="tfDesafio" layoutX="271.0" layoutY="24.0" promptText="Introduce un desafío">
          <tooltip>
-            <Tooltip text="Introduce el desafío a eliminar" />
+            <Tooltip text="Introduce el desafío a modificar" />
          </tooltip>
       </TextField>
       <Label fx:id="lblDesafio" layoutX="212.0" layoutY="28.0" text="Desafío" />
       <Label fx:id="lblTitulo" layoutX="384.0" layoutY="77.0" text="Título" />
       <TextField fx:id="tfTitulo" disable="true" layoutX="459.0" layoutY="73.0" />
       <Label fx:id="lblDescripcion" layoutX="384.0" layoutY="113.0" text="Descripción" />
-      <TextArea fx:id="tfDescripcionExp" disable="true" layoutX="458.0" layoutY="113.0" prefHeight="139.0" prefWidth="150.0" />
+      <TextArea fx:id="tfDescripcionExp" disable="true" layoutX="458.0" layoutY="113.0" prefHeight="139.0" prefWidth="150.0" wrapText="true" />
       <Label fx:id="lblCiudad" layoutX="384.0" layoutY="268.0" text="Dirección" />
       <TextField fx:id="tfDireccionExp" disable="true" layoutX="459.0" layoutY="264.0" />
       <Label fx:id="lblCoordenadas" layoutX="496.0" layoutY="297.0" text="Coordenadas" />
       <TextField fx:id="tfLongitud" disable="true" layoutX="548.0" layoutY="318.0" />
       <TextField fx:id="tfLatitud" disable="true" layoutX="365.0" layoutY="318.0" />
-      <Button fx:id="btnAnteriorExperiencia" disable="true" layoutX="348.0" layoutY="177.0" mnemonicParsing="false" onAction="#handleAnteriorExperienciaAction" prefHeight="30.0" prefWidth="38.0" text="&lt;-" />
-      <Button fx:id="btnSiguienteExperiencia" disable="true" layoutX="645.0" layoutY="177.0" mnemonicParsing="false" onAction="#handleSiguienteExperienciaAction" prefHeight="30.0" prefWidth="38.0" text="-&gt;" />
-      <Button fx:id="btnBuscar" layoutX="437.0" layoutY="21.0" mnemonicParsing="false" onAction="#handleBtnBuscarAction" prefHeight="30.0" prefWidth="85.0" text="Buscar" />
+      <Button fx:id="btnAnteriorExperiencia" disable="true" layoutX="348.0" layoutY="177.0" mnemonicParsing="false" onAction="#handleAnteriorExperienciaAction" prefHeight="30.0" prefWidth="38.0" text="&lt;-">
+         <tooltip>
+            <Tooltip text="Haz click para mostrar la experiencia anterior" />
+         </tooltip></Button>
+      <Button fx:id="btnSiguienteExperiencia" disable="true" layoutX="645.0" layoutY="177.0" mnemonicParsing="false" onAction="#handleSiguienteExperienciaAction" prefHeight="30.0" prefWidth="38.0" text="-&gt;">
+         <tooltip>
+            <Tooltip text="Haz click para mostrar la experiencia siguiente" />
+         </tooltip></Button>
+      <Button fx:id="btnBuscar" layoutX="437.0" layoutY="21.0" mnemonicParsing="false" onAction="#handleBtnBuscarAction" prefHeight="30.0" prefWidth="85.0" text="Buscar">
+         <tooltip>
+            <Tooltip text="Haz click para buscar el desafío " />
+         </tooltip></Button>
       <Label fx:id="lblDescripcion1" layoutX="38.0" layoutY="75.0" text="Descripción" />
-      <TextArea fx:id="tfDescripcionDes" disable="true" layoutX="112.0" layoutY="75.0" prefHeight="139.0" prefWidth="150.0" />
+      <TextArea fx:id="tfDescripcionDes" disable="true" layoutX="112.0" layoutY="75.0" prefHeight="139.0" prefWidth="150.0" wrapText="true" />
       <Label fx:id="lblCiudad1" layoutX="38.0" layoutY="228.0" text="Ciudad" />
       <TextField fx:id="tfCiudadDes" disable="true" layoutX="113.0" layoutY="224.0" />
       <Label layoutX="153.0" layoutY="260.0" text="Etiquetas">
@@ -44,8 +53,14 @@
       <CheckBox fx:id="chkArte" disable="true" layoutX="104.0" layoutY="327.0" mnemonicParsing="false" text="Arte" />
       <CheckBox fx:id="chkOcio" disable="true" layoutX="210.0" layoutY="327.0" mnemonicParsing="false" text="Ocio" />
       <CheckBox fx:id="chkGastronomia" disable="true" layoutX="103.0" layoutY="293.0" mnemonicParsing="false" text="Gastronomía" />
-      <Button fx:id="btnModDesafio" disable="true" layoutX="92.0" layoutY="460.0" mnemonicParsing="false" onAction="#handleBtnModDesafioAction" prefHeight="30.0" prefWidth="170.0" text="Modificar Desafío" />
-      <Button fx:id="btnModExperiencia" disable="true" layoutX="446.0" layoutY="460.0" mnemonicParsing="false" onAction="#handleBtnModExperienciaAction" prefHeight="30.0" prefWidth="169.0" text="Modificar Experiencia" />
+      <Button fx:id="btnModDesafio" disable="true" layoutX="92.0" layoutY="460.0" mnemonicParsing="false" onAction="#handleBtnModDesafioAction" prefHeight="30.0" prefWidth="170.0" text="Modificar Desafío">
+         <tooltip>
+            <Tooltip text="Modifica el desafío" />
+         </tooltip></Button>
+      <Button fx:id="btnModExperiencia" disable="true" layoutX="446.0" layoutY="460.0" mnemonicParsing="false" onAction="#handleBtnModExperienciaAction" prefHeight="30.0" prefWidth="169.0" text="Modificar Experiencia">
+         <tooltip>
+            <Tooltip text="Modifica la experiencia seleccionada" />
+         </tooltip></Button>
       <Button fx:id="btnImagen" disable="true" layoutX="480.0" layoutY="354.0" mnemonicParsing="false" onAction="#handleInsertarImagenAction" stylesheets="@modificaraniadir.css">
          <graphic>
             <ImageView id="imagen" fx:id="ivExperiencia" fitHeight="83.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
@@ -54,6 +69,9 @@
                </image>
             </ImageView>
          </graphic>
+         <tooltip>
+            <Tooltip text="Cambia la imagen de la experiencia" />
+         </tooltip>
       </Button>
    </children>
 </AnchorPane>

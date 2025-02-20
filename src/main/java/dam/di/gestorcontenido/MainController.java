@@ -4,6 +4,7 @@
  */
 package dam.di.gestorcontenido;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -49,6 +50,7 @@ public class MainController implements Initializable {
             File archivo = new File("src/main/java/dam/di/gestorcontenido/Aniadir.fxml");
             AnchorPane inicio = FXMLLoader.load(archivo.toURI().toURL());
             contenido.getChildren().setAll(inicio);
+            lblTituloMain.setText("Crear Desafío");
         } catch (IOException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -126,8 +128,18 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * Abre el manual de usuario
+     * @param event 
+     */
     @FXML
     private void handleBtnAyudaAction(ActionEvent event) {
+        try {
+            File manual = new File("documentacion/manual.html");
+            Desktop.getDesktop().browse(manual.toURI());
+        } catch (IOException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

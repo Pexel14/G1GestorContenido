@@ -4,9 +4,13 @@
  */
 package dam.di.gestorcontenido;
 
+import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Bucket;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.cloud.StorageClient;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,6 +22,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
@@ -77,6 +83,8 @@ public class EliminarController implements Initializable {
     private Label lblCoordenadas;
 
     private static int posicion;
+    private Bucket bucket;
+    private String nombreImagen;
 
     /**
      * Inicializa el punto de entrada de las dependencias de Firebase.
@@ -90,7 +98,9 @@ public class EliminarController implements Initializable {
                 //Construir las opciones de Firebase
                 FirebaseOptions options = new FirebaseOptions.Builder()
                         .setCredentials(GoogleCredentials.fromStream(credenciales))
-                        .setDatabaseUrl("https://pipas-pruebas-default-rtdb.firebaseio.com/").build();
+                        .setDatabaseUrl("https://pipas-pruebas-default-rtdb.firebaseio.com/")
+                        .setStorageBucket("pipas-pruebas.firebasestorage.app/")
+                    .build();
 
                 FirebaseApp.initializeApp(options);
             }
@@ -99,21 +109,28 @@ public class EliminarController implements Initializable {
 
             refDef = db.getReference("desafios");
             refExp = db.getReference("experiencias");
+            
+            bucket = StorageClient.getInstance().bucket("pipas-pruebas.firebasestorage.app");
 
             listaExp = new ArrayList<>();
 
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AniadirController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(ModificarAniadirController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AniadirController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
+    /**
+     * Método para eliminar el desafío seleccionado y sus experiencias relacionadas junto a las imagenes guardadas en Firebase Storage
+     * @param event 
+     */
     @FXML
     private void handleEliminarDesafioAction(ActionEvent event) {
         Alert confirmar = new Alert(Alert.AlertType.CONFIRMATION, "¿Confirmar borrado de desafío?");
         confirmar.showAndWait().ifPresent(respuesta -> {
+            Blob imagenAntigua;
             if (respuesta == ButtonType.OK) {
                 refDef.child(desafio.getTitulo()).removeValue((DatabaseError de, DatabaseReference dr) -> {
                     listaExp.remove(posicion);
@@ -122,6 +139,13 @@ public class EliminarController implements Initializable {
                     alerta.showAndWait();
                 });
                 for(String experiencia : desafio.getExperiencias().split(",")){
+                    
+                    imagenAntigua = bucket.get(nombreImagen);
+
+                    if(imagenAntigua != null){
+                        imagenAntigua.delete();
+                    }
+                    
                     refExp.child(experiencia).removeValue((DatabaseError de, DatabaseReference dr) -> {});
                 }
                 Alert alerta = new Alert(Alert.AlertType.INFORMATION, "Experiencia borrada con exito");
@@ -130,6 +154,10 @@ public class EliminarController implements Initializable {
         });
     }
 
+    /**
+     * Método para eliminar la experiencia seleccionada junto a la imagen en Firebase Storage
+     * @param event 
+     */
     @FXML
     private void handleEliminarExperienciaAction(ActionEvent event) {
         Alert confirmar = new Alert(Alert.AlertType.CONFIRMATION, "¿Confirmar borrado de experiencia?");
@@ -142,6 +170,12 @@ public class EliminarController implements Initializable {
                     actualizarDesafio(listaExp.get(posicion).getId());
                     listaExp.remove(posicion);
                     limpiarDatos();
+                    
+                    Blob imagenAntigua = bucket.get(nombreImagen);
+
+                    if(imagenAntigua != null){
+                        imagenAntigua.delete();
+                    }
                     Alert alerta = new Alert(Alert.AlertType.INFORMATION, "Experiencia borrada con exito");
                     alerta.showAndWait();
                 });
@@ -149,6 +183,10 @@ public class EliminarController implements Initializable {
         });
     }
 
+    /**
+     * Cambia la experiencia que se visualiza en los componentes de la interfaz
+     * @param event 
+     */
     @FXML
     private void handleAnteriorExperienciaAction(ActionEvent event) {
         if (posicion == 0) {
@@ -161,6 +199,10 @@ public class EliminarController implements Initializable {
 
     }
 
+    /**
+     * Cambia la experiencia que se visualiza en los componentes de la interfaz
+     * @param event 
+     */
     @FXML
     private void handleSiguienteExperienciaAction(ActionEvent event) {
         if (posicion == listaExp.size() - 1) {
@@ -173,6 +215,10 @@ public class EliminarController implements Initializable {
 
     }
 
+    /**
+     * Busca en la base de datos el desafío que ha introducido el usuario
+     * @param event 
+     */
     @FXML
     private void handleBtnBuscarAction(ActionEvent event) {
         String titulo = tfDesafio.getText();
@@ -182,14 +228,16 @@ public class EliminarController implements Initializable {
                 public void onDataChange(DataSnapshot ds) {
                     String tituloDes = null;
                     String experiencias = null;
+                    long id;
                     boolean encontrado = false;
                     for (DataSnapshot snapshot : ds.getChildren()) {
                         tituloDes = snapshot.child("titulo").getValue(String.class);
                         if (tituloDes.equals(titulo)) {
                             experiencias = snapshot.child("experiencias").getValue(String.class);
-                            
+                            id = snapshot.child("id").getValue(Long.class);
+                            nombreImagen = "imagenes/" + titulo + id + ".png"; 
                             desafio = new Desafio(
-                                    snapshot.child("id").getValue(Long.class),
+                                    id,
                                     tituloDes, 
                                     snapshot.child("descripcion").getValue(String.class), 
                                     snapshot.child("ciudad").getValue(String.class), 
@@ -219,11 +267,15 @@ public class EliminarController implements Initializable {
         }
     }
 
+    /**
+     * Muestra los componentes de la interfaz
+     * @param mostrar 
+     */
     public void mostrarBotones(boolean mostrar) {
-        btnAnteriorExperiencia.setVisible(mostrar);
-        btnEliminarDesafio.setVisible(mostrar);
-        btnEliminarExperiencia.setVisible(mostrar);
-        btnSiguienteExperiencia.setVisible(mostrar);
+        btnAnteriorExperiencia.setDisable(!mostrar);
+        btnEliminarDesafio.setDisable(!mostrar);
+        btnEliminarExperiencia.setDisable(!mostrar);
+        btnSiguienteExperiencia.setDisable(!mostrar);
         lblDesafio.setVisible(mostrar);
         lblCiudad.setVisible(mostrar);
         lblCoordenadas.setVisible(mostrar);
@@ -237,6 +289,10 @@ public class EliminarController implements Initializable {
         tfTitulo.setVisible(mostrar);
     }
 
+    /**
+     * Rellena una lista con las experiencias del desafío encontrado
+     * @param experiencias Experiencias relacionadas al desafío
+     */
     public void rellenarContenido(String[] experiencias) {
         refExp.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -270,6 +326,10 @@ public class EliminarController implements Initializable {
         });
     }
 
+    /**
+     * Inserta la experiencia seleccionada en los componentes de la interfaz
+     * @param index Posición de la experiencia
+     */
     public void insertarExperiencia(int index) {
         tfTitulo.setText(listaExp.get(index).getTitulo());
         tfDescripcion.setText(listaExp.get(index).getDescripcion());
@@ -278,6 +338,9 @@ public class EliminarController implements Initializable {
         tfLongitud.setText(listaExp.get(index).getCoordenadas().split(",")[1]);
     }
 
+    /**
+     * Limpia los datos de la interfaz
+     */
     public void limpiarDatos() {
         tfTitulo.setText("");
         tfDescripcion.setText("");
@@ -286,8 +349,40 @@ public class EliminarController implements Initializable {
         tfLongitud.setText("");
     }
 
+    /**
+     * Quita la experiencia eliminada del desafío
+     * @param id_exp ID de la experiencia eliminada
+     */
     private void actualizarDesafio(long id_exp) {
-        
+        if(desafio.getExperiencias().contains(String.valueOf(id_exp))){
+            String experiencias = "";
+            String [] aux = desafio.getExperiencias().split(",");
+            
+            for (int i = 0; i < aux.length; i++) {
+                if(!aux[i].equals(String.valueOf(id_exp))){
+                    experiencias += aux[i];
+                }
+            }
+            
+            if(!experiencias.isEmpty()){
+                experiencias = experiencias.substring(0, experiencias.length() -1);
+            }
+            
+            desafio.setExperiencias(experiencias);
+            
+            CompletableFuture.runAsync(() ->{
+                try {
+                    ApiFuture<Void>future =  refDef.child(desafio.getTitulo()).setValueAsync(desafio);
+                    future.get();
+
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(AniadirController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ExecutionException ex) {
+                    Logger.getLogger(AniadirController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+            
+        }
     }
 
 }
