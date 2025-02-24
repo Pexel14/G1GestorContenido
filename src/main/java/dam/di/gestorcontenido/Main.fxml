@@ -2,84 +2,70 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900.0" styleClass="mainFxmlClass" stylesheets="@main.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.di.gestorcontenido.MainController">
    <children>
-      <Pane layoutY="0.1999999999999318" prefHeight="600.0" prefWidth="188.0" style="-fx-background-color: #1FCE7D;" AnchorPane.bottomAnchor="0.20000000000004547">
+      <Pane layoutY="-0.6000000000000227" prefHeight="602.0" prefWidth="132.0" style="-fx-background-color: #1FCE7D;" AnchorPane.bottomAnchor="0.0">
          <children>
-            <Pane layoutX="187.0" prefHeight="94.0" prefWidth="715.0" style="-fx-background-color: #1FCE7D;" stylesheets="@main.css" />
+            <Pane layoutX="132.0" prefHeight="94.0" prefWidth="770.0" style="-fx-background-color: #1FCE7D;" stylesheets="@main.css" />
+            <VBox id="caja" layoutY="90.0" prefHeight="514.0" prefWidth="132.0" spacing="25.0" stylesheets="@main.css">
+               <children>
+                  <Button fx:id="btnAniadir" mnemonicParsing="false" onAction="#handleAniadirAction">
+                     <graphic>
+                        <ImageView fitHeight="85.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/login.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnModificar" mnemonicParsing="false" onAction="#handleModificarButton">
+                     <graphic>
+                        <ImageView fitHeight="85.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/editar.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#handleEliminarButton">
+                     <graphic>
+                        <ImageView fitHeight="85.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/iconoPer.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnSalir" mnemonicParsing="false" onAction="#handleSalirButton">
+                     <graphic>
+                        <ImageView fitHeight="85.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/icnExt.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
          </children>
       </Pane>
-      <VBox id="caja" layoutX="25.0" layoutY="110.0" prefHeight="380.0" prefWidth="131.0" stylesheets="@main.css">
-         <children>
-            <Button fx:id="btnAniadir" mnemonicParsing="false" onAction="#handleAniadirAction">
-               <graphic>
-                  <ImageView fitHeight="85.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@img/login.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <tooltip>
-                  <Tooltip text="Haz click para ir a la ventana Añadir" />
-               </tooltip>
-            </Button>
-            <Button fx:id="btnModificar" mnemonicParsing="false" onAction="#handleModificarButton">
-               <graphic>
-                  <ImageView fitHeight="85.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@img/editar.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <tooltip>
-                  <Tooltip text="Haz click para ir a la ventana Modificar" />
-               </tooltip>
-            </Button>
-            <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#handleEliminarButton">
-               <graphic>
-                  <ImageView fitHeight="85.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@img/iconoPer.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <tooltip>
-                  <Tooltip text="Haz click para ir a la ventana Eliminar" />
-               </tooltip>
-            </Button>
-            <Button fx:id="btnSalir" mnemonicParsing="false" onAction="#handleSalirButton">
-               <graphic>
-                  <ImageView fitHeight="85.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@img/icnExt.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <tooltip>
-                  <Tooltip text="Haz click para salir de la aplicación" />
-               </tooltip>
-            </Button>
-         </children>
-      </VBox>
-      <Label fx:id="lblTituloMain" alignment="CENTER" layoutX="263.0" layoutY="30.0" prefHeight="46.0" prefWidth="638.0" text="Añadir Desafíos" textAlignment="CENTER" />
-      <Button fx:id="btnAyuda" layoutX="775.0" layoutY="16.0" mnemonicParsing="false" onAction="#handleBtnAyudaAction">
-         <graphic>
-            <ImageView fitHeight="65.0" fitWidth="95.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@img/informacion.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <tooltip>
-            <Tooltip text="Haz click para abrir el manual de usuario" />
-         </tooltip></Button>
-      <AnchorPane fx:id="contenido" layoutX="186.0" layoutY="94.0" prefHeight="506.0" prefWidth="715.0" />
+      <Label fx:id="lblTituloMain" alignment="CENTER" layoutX="131.0" layoutY="30.0" prefHeight="46.0" prefWidth="770.0" text="Añadir Desafíos" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font></Label>
+      <Button fx:id="btnAyuda" layoutX="775.0" layoutY="16.0" mnemonicParsing="false" onAction="#handleBtnAyudaAction" />
+      <AnchorPane fx:id="contenido" layoutX="131.0" layoutY="94.0" prefHeight="506.0" prefWidth="770.0" />
+      <ImageView fitHeight="65.0" fitWidth="95.0" layoutX="786.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@img/informacion.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

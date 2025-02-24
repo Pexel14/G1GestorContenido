@@ -6,43 +6,32 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="516.0" prefWidth="715.0" styleClass="mainFxmlClass" stylesheets="@eliminar.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.di.gestorcontenido.EliminarController">
+<AnchorPane id="AnchorPane" prefHeight="516.0" prefWidth="770.0" styleClass="mainFxmlClass" stylesheets="@eliminar.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dam.di.gestorcontenido.EliminarController">
    <children>
-      <TextField fx:id="tfDesafio" layoutX="303.0" layoutY="64.0" promptText="Introduce un desafío">
+      <TextField fx:id="tfDesafio" layoutX="302.0" layoutY="70.0" promptText="Introduce un desafío">
          <tooltip>
             <Tooltip text="Introduce el desafío a eliminar" />
          </tooltip>
       </TextField>
-      <Label fx:id="lblDesafio" layoutX="358.0" layoutY="37.0" text="Desafío" />
-      <Button fx:id="btnEliminarDesafio" disable="true" layoutX="215.0" layoutY="109.0" mnemonicParsing="false" onAction="#handleEliminarDesafioAction" prefHeight="30.0" prefWidth="142.0" text="Eliminar Desafío">
-         <tooltip>
-            <Tooltip text="Elimina el desafío y las experiencias relacionadas" />
-         </tooltip></Button>
-      <Button fx:id="btnEliminarExperiencia" disable="true" layoutX="398.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleEliminarExperienciaAction" text="Eliminar Experiencia">
-         <tooltip>
-            <Tooltip text="Elimina la experiencia actual" />
-         </tooltip></Button>
-      <Label fx:id="lblTitulo" layoutX="283.0" layoutY="186.0" text="Título" />
-      <TextField fx:id="tfTitulo" disable="true" layoutX="358.0" layoutY="182.0" />
-      <Label fx:id="lblDescripcion" layoutX="283.0" layoutY="222.0" text="Descripción" />
-      <TextArea fx:id="tfDescripcion" disable="true" layoutX="357.0" layoutY="222.0" prefHeight="139.0" prefWidth="150.0" wrapText="true" />
-      <Label fx:id="lblCiudad" layoutX="283.0" layoutY="377.0" text="Ciudad" />
-      <TextField fx:id="tfCiudad" disable="true" layoutX="358.0" layoutY="373.0" />
-      <Label fx:id="lblCoordenadas" layoutX="342.0" layoutY="413.0" text="Coordenadas" />
-      <TextField fx:id="tfLongitud" disable="true" layoutX="394.0" layoutY="442.0" />
-      <TextField fx:id="tfLatitud" disable="true" layoutX="211.0" layoutY="442.0" />
-      <Button fx:id="btnAnteriorExperiencia" disable="true" layoutX="164.0" layoutY="286.0" mnemonicParsing="false" onAction="#handleAnteriorExperienciaAction" prefHeight="30.0" prefWidth="38.0" text="&lt;-">
-         <tooltip>
-            <Tooltip text="Selecciona la anterior experiencia" />
-         </tooltip></Button>
-      <Button fx:id="btnSiguienteExperiencia" disable="true" layoutX="569.0" layoutY="286.0" mnemonicParsing="false" onAction="#handleSiguienteExperienciaAction" prefHeight="30.0" prefWidth="38.0" text="-&gt;">
-         <tooltip>
-            <Tooltip text="Selecciona la siguiente experiencia" />
-         </tooltip></Button>
-      <Button fx:id="btnBuscar" layoutX="469.0" layoutY="61.0" mnemonicParsing="false" onAction="#handleBtnBuscarAction" prefHeight="30.0" prefWidth="85.0" text="Buscar">
-         <tooltip>
-            <Tooltip text="Busca el desafío" />
-         </tooltip></Button>
+      <Label fx:id="lblDesafio" layoutX="340.0" layoutY="23.0" text="Desafío">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font></Label>
+      <Button fx:id="btnEliminarDesafio" disable="true" layoutX="214.0" layoutY="115.0" mnemonicParsing="false" onAction="#handleEliminarDesafioAction" prefHeight="30.0" prefWidth="142.0" text="Eliminar Desafío" />
+      <Button fx:id="btnEliminarExperiencia" disable="true" layoutX="397.0" layoutY="116.0" mnemonicParsing="false" onAction="#handleEliminarExperienciaAction" text="Eliminar Experiencia" />
+      <Label fx:id="lblTitulo" layoutX="282.0" layoutY="192.0" text="Título" />
+      <TextField fx:id="tfTitulo" disable="true" layoutX="357.0" layoutY="188.0" />
+      <Label fx:id="lblDescripcion" layoutX="282.0" layoutY="228.0" text="Descripción" />
+      <TextArea fx:id="tfDescripcion" disable="true" layoutX="356.0" layoutY="228.0" prefHeight="139.0" prefWidth="150.0" />
+      <Label fx:id="lblCiudad" layoutX="282.0" layoutY="383.0" text="Ciudad" />
+      <TextField fx:id="tfCiudad" disable="true" layoutX="357.0" layoutY="379.0" />
+      <Label fx:id="lblCoordenadas" layoutX="341.0" layoutY="419.0" text="Coordenadas" />
+      <TextField fx:id="tfLongitud" disable="true" layoutX="393.0" layoutY="448.0" />
+      <TextField fx:id="tfLatitud" disable="true" layoutX="210.0" layoutY="448.0" />
+      <Button fx:id="btnAnteriorExperiencia" disable="true" layoutX="163.0" layoutY="292.0" mnemonicParsing="false" onAction="#handleAnteriorExperienciaAction" prefHeight="30.0" prefWidth="38.0" text="&lt;-" />
+      <Button fx:id="btnSiguienteExperiencia" disable="true" layoutX="568.0" layoutY="292.0" mnemonicParsing="false" onAction="#handleSiguienteExperienciaAction" prefHeight="30.0" prefWidth="38.0" text="-&gt;" />
+      <Button fx:id="btnBuscar" layoutX="468.0" layoutY="67.0" mnemonicParsing="false" onAction="#handleBtnBuscarAction" prefHeight="30.0" prefWidth="85.0" text="Buscar" />
    </children>
 </AnchorPane>
