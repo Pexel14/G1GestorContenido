@@ -315,7 +315,7 @@ public class AniadirController implements Initializable {
                                             }
                                             id++;
                                             id_exp = id;
-                                            listaExp.add(new Experiencia(id, titulo, descripcion, direccion, blob.getMediaLink(), coordenadas));
+                                            listaExp.add(new Experiencia(id, titulo, descripcion, direccion, blob.getSelfLink(), coordenadas));
                                             btnAniadirDesafio.setVisible(true);
                                         }
 
@@ -326,8 +326,8 @@ public class AniadirController implements Initializable {
                                     });
                                 } else {
                                     long id = listaExp.get(listaExp.size() - 1).getId() + 1;
-                                    System.out.println("IMAGEN: " + blob.getMediaLink());
-                                    listaExp.add(new Experiencia(id, titulo, descripcion, direccion, blob.getMediaLink(), coordenadas));
+                                    System.out.println("IMAGEN: " + blob.getSelfLink());
+                                    listaExp.add(new Experiencia(id, titulo, descripcion, direccion, blob.getSelfLink(), coordenadas));
                                 }
                                 mostrarMensaje("Experiencia añadida con exito", 0);
                                 limpiarCamposExp();
